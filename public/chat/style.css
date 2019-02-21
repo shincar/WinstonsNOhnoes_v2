@@ -72,6 +72,16 @@ ul {
   width: 400px;
 }
 
+.login.page .form .chatRoomNameInput {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #fff;
+  outline: none;
+  padding-bottom: 15px;
+  text-align: center;
+  width: 400px;
+}
+
 .login.page .title {
   font-size: 200%;
 }
@@ -81,7 +91,17 @@ ul {
   letter-spacing: 3px;
 }
 
+.login.page .chatRoomNameInput {
+  font-size: 200%;
+  letter-spacing: 3px;
+}
+
 .login.page .title, .login.page .usernameInput {
+  color: #fff;
+  font-weight: 100;
+}
+
+.login.page .title, .login.page .chatRoomNameInput {
   color: #fff;
   font-weight: 100;
 }
@@ -104,9 +124,14 @@ ul {
 
 .log {
   color: gray;
-  font-size: 70%;
+  font-size: 100%;
   margin: 5px;
-  text-align: center;
+  text-align: left;
+}
+
+.message {
+  margin-left: 10px;
+  text-align: left;
 }
 
 /* Messages */
@@ -130,7 +155,14 @@ ul {
 .username {
   font-weight: 700;
   overflow: hidden;
-  padding-right: 15px;
+  padding-right: 5px;
+  text-align: right;
+}
+
+.verb {
+  font-weight: 700;
+  overflow: hidden;
+  padding-right: 5px;
   text-align: right;
 }
 

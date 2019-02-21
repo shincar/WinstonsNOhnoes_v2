@@ -7,6 +7,8 @@ $(function() {
     '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
   ];
 
+  var welcome_message = "歡迎光臨 Adam & Alvin's Fun Lab";
+
   // Initialize variables
   var $window = $(window);
   var $usernameInput = $('.usernameInput'); // Input for username
@@ -27,7 +29,7 @@ $(function() {
 
   const addParticipantsMessage = (data) => {
     var message = '';
-    message += "目前有 " + data.numUsers + " 使用者在線上"
+    message += "目前有 " + data.numUsers + " 使用者在線上";
     log(message);
   }
 
@@ -83,6 +85,8 @@ $(function() {
     var $usernameDiv = $('<span class="username"/>')
       .text(data.username)
       .css('color', getUsernameColor(data.username));
+    var $verbDiv = $('<span class="verb">')
+      .text(': ');
     var $messageBodyDiv = $('<span class="messageBody">')
       .text(data.message);
 
@@ -90,7 +94,7 @@ $(function() {
     var $messageDiv = $('<li class="message"/>')
       .data('username', data.username)
       .addClass(typingClass)
-      .append($usernameDiv, $messageBodyDiv);
+      .append($usernameDiv, $verbDiv, $messageBodyDiv);
 
     addMessageElement($messageDiv, options);
   }
@@ -225,7 +229,7 @@ $(function() {
   socket.on('login', (data) => {
     connected = true;
     // Display the welcome message
-    var message = "歡迎光臨 Adam & Alvin's Fun Lab";
+    var message = welcome_message;
     log(message, {
       prepend: true
     });

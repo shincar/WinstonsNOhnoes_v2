@@ -4,7 +4,7 @@ var app = express();
 var path = require('path');
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-var port = 8080;
+var port = 30000;
 
 server.listen(port, () => {
   console.log('Server listening at port %d', port);
@@ -13,8 +13,22 @@ server.listen(port, () => {
 // Routing
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/', function(req, res) {
+  console.log('SendFile: ' + path.join(__dirname, '/public/WinstonNOhnoes_Fullscreen.html'));
+  res.sendFile(path.join(__dirname, '/public/WinstonNOhnoes_Fullscreen.html'));
+});
+
+app.get('/chat', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/chat.html'));
+})
+
 // Chatroom
 var numUsers = 0;
+
+var Chatroom = function() {
+
+};
+
 
 io.on('connection', (socket) => {
   var addedUser = false;
