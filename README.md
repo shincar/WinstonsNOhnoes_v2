@@ -1,19 +1,17 @@
 
-# Socket.IO Chat
+# Winston & Ohnoes v2
 
-A simple chat demo for socket.io
+Integrate chat feature from examples of socket.io. Later I will try to add feature for pairing someone on internet to play this game.
 
 ## How to use
 
 ```
-$ cd socket.io
-$ npm install
-$ cd examples/chat
+$ cd WinstonsNOhnoes_v2
 $ npm install
 $ npm start
 ```
 
-And point your browser to `http://localhost:3000`. Optionally, specify
+And point your browser to `http://localhost:8080`. Optionally, specify
 a port by supplying the `PORT` env variable.
 
 ## Features
