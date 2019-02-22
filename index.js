@@ -22,13 +22,30 @@ app.get('/chat', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/chat.html'));
 })
 
-// Chatroom
 var numUsers = 0;
 
-var Chatroom = function() {
-
+var Player = function(username) {
+  this.name = username;
+  this.fightroomname;
 };
 
+var Move = function() {
+  this.plyaername;
+  this.grid;
+  this.token;
+}
+
+var Fightroom = function() {
+  this.name;
+  this.maxPlayerCount = 2;
+  this.currentPlayers;
+  this.currentPlayer;
+  this.moves = [];
+  this.winner;
+}
+
+var playerList = [];
+var fightroomList = [];
 
 io.on('connection', (socket) => {
   var addedUser = false;
