@@ -4,8 +4,40 @@
   <meta charset="UTF-8">
   <title>Adam & Alvin's Fun Lab - Chatroom</title>
   <link rel="stylesheet" href="/chat/style.css">
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script>
+    var is_iOS = function() {
+      return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    };
+
+    var onPageLoaded = function() {
+      if(is_iOS()) {
+        console.log("iOS, try to make font bigger");
+        // Tweak UI for login pane
+        var $form = $('.form');
+        var $title = $('.title');
+        var $usernameInput = $('.usernameInput');
+
+        $form.css('top', '30%');
+        $title.css('font-size', '600%');
+        $usernameInput.css('font-size', '600%');
+
+        // Tweak UI for messages pane
+        var $chatArea = $('.chatArea');
+        var $messages = $('.messages');
+        var $inputMessage = $('.inputMessage');
+
+        console.log('.charArea.padding-bottom: ' + $chatArea.css('padding-bottom'));
+        $messages.css('font-size', '350%');
+        $inputMessage.css('font-size', '400%');
+        $chatArea.css('padding-bottom', '150px')
+        $inputMessage.css('height', '150px');
+        console.log('.charArea.padding-bottom: ' + $chatArea.css('padding-bottom'));
+      }
+    }
+  </script>
 </head>
-<body>
+<body onload="onPageLoaded()">
   <ul class="pages">
     <li class="chat page">
       <div class="chatArea">
@@ -20,8 +52,6 @@
       </div>
     </li>
   </ul>
-
-  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/chat/main.js"></script>
 </body>
