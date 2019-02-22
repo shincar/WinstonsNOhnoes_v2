@@ -9,6 +9,39 @@
     var is_iOS = function() {
       return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     };
+    var oncompositionStart = function() {
+
+    };
+
+    var compositionEnd = function() {
+
+    };
+
+    var onResize = function() {
+      if($(window).width() + $(window).height() != _originalSize) {
+        console.log("keyboard show up");
+        var $chatArea = $('.chatArea');
+        var $messages = $('.messages');
+        var $inputMessage = $('.inputMessage');
+
+        $messages.css('font-size', '350%');
+        $inputMessage.css('font-size', '400%');
+        $chatArea.css('padding-bottom', '150px')
+        $inputMessage.css('height', '150px');
+      } else {
+        console.log("keyboard closed");
+        var $chatArea = $('.chatArea');
+        var $messages = $('.messages');
+        var $inputMessage = $('.inputMessage');
+
+        $messages.css('font-size', '350%');
+        $inputMessage.css('font-size', '400%');
+        $chatArea.css('padding-bottom', '150px')
+        $inputMessage.css('height', '150px');
+      }
+    };
+
+    var _originalSize;
 
     var onPageLoaded = function() {
       if(is_iOS()) {
@@ -27,12 +60,14 @@
         var $messages = $('.messages');
         var $inputMessage = $('.inputMessage');
 
-        console.log('.charArea.padding-bottom: ' + $chatArea.css('padding-bottom'));
         $messages.css('font-size', '350%');
         $inputMessage.css('font-size', '400%');
         $chatArea.css('padding-bottom', '150px')
         $inputMessage.css('height', '150px');
-        console.log('.charArea.padding-bottom: ' + $chatArea.css('padding-bottom'));
+
+        _originalSize = $(window).width() + $(window).height();
+
+        $(window).resize = onResize();
       }
     }
   </script>
