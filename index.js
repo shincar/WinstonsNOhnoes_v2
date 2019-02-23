@@ -14,8 +14,9 @@ server.listen(port, () => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
-  console.log('SendFile: ' + path.join(__dirname, '/public/WinstonNOhnoes_Fullscreen.html'));
-  res.sendFile(path.join(__dirname, '/public/WinstonNOhnoes_Fullscreen.html'));
+//  console.log('SendFile: ' + path.join(__dirname, '/public/WinstonNOhnoes_Fullscreen.html'));
+//  res.sendFile(path.join(__dirname, '/public/WinstonNOhnoes_Fullscreen.html'));
+    res.send('Debug');
 });
 
 app.get('/chat', function(req, res) {
