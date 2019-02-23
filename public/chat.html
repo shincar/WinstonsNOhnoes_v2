@@ -4,8 +4,75 @@
   <meta charset="UTF-8">
   <title>Adam & Alvin's Fun Lab - Chatroom</title>
   <link rel="stylesheet" href="/chat/style.css">
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script>
+    var is_iOS = function() {
+      return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    };
+    var oncompositionStart = function() {
+
+    };
+
+    var compositionEnd = function() {
+
+    };
+
+    var onResize = function() {
+      if($(window).width() + $(window).height() != _originalSize) {
+        console.log("keyboard show up");
+        var $chatArea = $('.chatArea');
+        var $messages = $('.messages');
+        var $inputMessage = $('.inputMessage');
+
+        $messages.css('font-size', '350%');
+        $inputMessage.css('font-size', '400%');
+        $chatArea.css('padding-bottom', '150px')
+        $inputMessage.css('height', '150px');
+      } else {
+        console.log("keyboard closed");
+        var $chatArea = $('.chatArea');
+        var $messages = $('.messages');
+        var $inputMessage = $('.inputMessage');
+
+        $messages.css('font-size', '350%');
+        $inputMessage.css('font-size', '400%');
+        $chatArea.css('padding-bottom', '150px')
+        $inputMessage.css('height', '150px');
+      }
+    };
+
+    var _originalSize;
+
+    var onPageLoaded = function() {
+      if(is_iOS()) {
+        console.log("iOS, try to make font bigger");
+        // Tweak UI for login pane
+        var $form = $('.form');
+        var $title = $('.title');
+        var $usernameInput = $('.usernameInput');
+
+        $form.css('top', '30%');
+        $title.css('font-size', '600%');
+        $usernameInput.css('font-size', '600%');
+
+        // Tweak UI for messages pane
+        var $chatArea = $('.chatArea');
+        var $messages = $('.messages');
+        var $inputMessage = $('.inputMessage');
+
+        $messages.css('font-size', '350%');
+        $inputMessage.css('font-size', '400%');
+        $chatArea.css('padding-bottom', '150px')
+        $inputMessage.css('height', '150px');
+
+        _originalSize = $(window).width() + $(window).height();
+
+        $(window).resize = onResize();
+      }
+    }
+  </script>
 </head>
-<body>
+<body onload="onPageLoaded()">
   <ul class="pages">
     <li class="chat page">
       <div class="chatArea">
@@ -20,8 +87,6 @@
       </div>
     </li>
   </ul>
-
-  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/chat/main.js"></script>
 </body>
