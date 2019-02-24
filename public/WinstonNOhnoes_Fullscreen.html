@@ -1,10 +1,100 @@
 <html>
 <head>
+  <style>
+  body {
+    margin: 0px;
+    padding: 0px;
+  }
+  canvas {
+    outline: 0px;
+    position: absolute;
+    margin: 0px;
+    padding: 0px;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+  }
+  </style>
   <script src="js/processing-1.4.8.min.js"></script>
   <script type="text/processing" data-processing-target="processing-canvas">
-    size(400, 400);
-    fill(255);
-    text("Hello", 50, 50);
+  const GAME_SCENE_HOME = 0;
+  const GAME_SCENE_PLAYGROUND = 1;
+  const GAME_SCENE_END = 2;
+
+  const TOKEN_SIZE_SMALL = 40;
+  const TOKEN_SIZE_MEDIUM = 70;
+  const TOKEN_SIZE_LARGE = 100;
+
+  var gridSize = 160;
+  var gridCount = 3;
+  var paddingOfBoard = 120;
+  var maxSize = gridSize * gridCount + paddingOfBoard * 2;
+  var paddingExtraH = (window.innerWidth - maxSize) / 2;
+  var paddingExtraV = (window.innerHeight - maxSize) / 2;
+  size(window.innerWidth, window.innerHeight);
+
+  var Button = function(text, x, y, w, h, radius) {
+    this.text = text;
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.radius = radius;
+    this.color = color(93,194,83);
+    this.text_color = color(213,251,209);
+    this.stroke_color = color(213,251,209);
+    this.stroke_weight = 5;
+    this.text_size = 36;
+  };
+
+  Button.prototype.IsContains = function(x, y) {
+    return (x > this.x && x < this.x + this.w &&
+            y > this.y && y < this.y + this.h);
+  }
+
+  Button.prototype.draw = function() {
+    fill(this.color);
+    stroke(this.stroke_color);
+    strokeWeight(this.stroke_weight);
+    rect(this.x, this.y, this.w, this.h, this.radius);
+    textSize(this.text_size);
+    fill(this.text_color);
+    textAlign(CENTER, TOP);
+    text(this.text, this.x + this.w / 2, this.y);
+  };
+
+  var Player = function(id, name, color, image) {
+    this.id = id;
+    this.name = name;
+    this.color = color;
+    this.image = image;
+  };
+
+
+  var player1 = new Player(1, "Player 1", color(213,251,209), loadImage("images/cs-winston.png"));
+  var player2 = new Player(2, "Player 2", color(58,121,52), loadImage("images/cs-ohnoes.png"));
+  var start_button = new Button("Start", paddingOfBoard + 30 + paddingExtraH, gridSize * 2 + paddingOfBoard + paddingExtraV, gridSize, gridSize * 0.3, gridSize / 10);
+  var options_button = new Button("Back", maxSize + paddingExtraH - (paddingOfBoard + 30) - gridSize, gridSize * 2 + paddingOfBoard + paddingExtraV, gridSize, gridSize * 0.3, gridSize / 10);
+
+  var drawHomeScene = function() {
+      background(58,121,52);
+      fill(213,251,209);
+      textSize(60);
+      textAlign(CENTER,CENTER);
+      text("Winston & Ohnoes", 0, 0, maxSize + 2 * paddingExtraH, maxSize * 0.75 + 2 * paddingExtraV);
+
+      // Draw start button
+      start_button.draw();
+      options_button.draw();
+
+      image(player1.image, paddingOfBoard + 50 + paddingExtraH, paddingOfBoard + paddingExtraV, 100, 100);
+      image(player2.image, maxSize - paddingOfBoard - 150 + paddingExtraH, paddingOfBoard + paddingExtraV, 100, 100);
+  };
+
+  draw = function() {
+    drawHomeScene();
+  };
   </script>
 </head>
 <body>
