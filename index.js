@@ -19,13 +19,17 @@ app.get('/', function(req, res) {
     res.send('Debug');
 });
 
+app.get('/games', function(req, res) {
+  res.sendFile(path.join(__dirname, '/pulbic/WinstonNOhnoes_Fullscreen.html'));
+});
+
 app.get('/chat', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/chat.html'));
 })
 
 var numUsers = 0;
 
-var Player = function(username) {
+var OnlinePlayer = function(username) {
   this.name = username;
   this.fightroomname;
 };
