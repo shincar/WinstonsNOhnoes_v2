@@ -20,7 +20,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/games', function(req, res) {
-  res.sendFile(path.join(__dirname, '/pulbic/WinstonNOhnoes_Fullscreen.html'));
+  res.sendFile(path.join(__dirname, '/public/WinstonNOhnoes_Fullscreen.html'));
 });
 
 app.get('/chat', function(req, res) {
