@@ -20,6 +20,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/game', function(req, res) {
+  console.log('SendFile: ' + path.join(__dirname, '/game.html'));
   res.sendFile(path.join(__dirname, '/game.html'));
 });
 
