@@ -9603,7 +9603,7 @@ module.exports = function setupParser(Processing, options) {
 
     function attachEventHandler(elem, type, fn) {
       if (elem.addEventListener) {
-        elem.addEventListener(type, fn, false);
+        elem.addEventListener(type, fn, false, {passive: true});
       } else {
         elem.attachEvent("on" + type, fn);
       }
