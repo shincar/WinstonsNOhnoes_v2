@@ -11,7 +11,7 @@ server.listen(port, () => {
 });
 
 // Routing
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
 app.get('/', function(req, res) {
 //  console.log('SendFile: ' + path.join(__dirname, '/public/WinstonNOhnoes_Fullscreen.html'));
@@ -19,8 +19,8 @@ app.get('/', function(req, res) {
     res.send('Debug');
 });
 
-app.get('/games', function(req, res) {
-  res.sendFile(path.join(__dirname, '/public/WinstonNOhnoes_Fullscreen.html'));
+app.get('/game', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/game.html'));
 });
 
 app.get('/chat', function(req, res) {
