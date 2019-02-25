@@ -20,7 +20,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/game', function(req, res) {
-  res.sendFile(path.join(__dirname, '/public/game.html'));
+  res.sendFile(path.join(__dirname, '/game.html'));
 });
 
 app.get('/chat', function(req, res) {
