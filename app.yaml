@@ -16,4 +16,4 @@ runtime: nodejs10
 # [END gae_quickstart_yaml]
 
 env_variables:
-  PORT: 8080
+  PORT: 80
