@@ -4,8 +4,33 @@
     <title>Adam & Alvin's Lab - Winston & Ohnoes</title>
     <link rel="stylesheet" href="/game/style.css">
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script>
+      var is_iOS = function() {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      };
+
+      var onPageLoaded = function() {
+        if(is_iOS()) {
+          console.log("iOS, try to make font bigger");
+          // Tweak UI for login pane
+          var $form = $('.form');
+          var $title = $('.title');
+          var $usernameInput = $('.usernameInput');
+          var $fightroomInput = $('.fightroomInput');
+          var $cancelButton = $('.cancelButton');
+
+          $form.css('top', '30%');
+          $title.css('font-size', '600%');
+
+          $usernameInput.css('font-size', '600%');
+          $fightroomInput.css('font-size', '600%');
+
+          $cancelButton.css('font-size', '450%');
+        }
+      }
+    </script>
   <head>
-  <body>
+  <body onload="onPageLoaded()">
     <script src="js/processing-1.4.8.min.js"></script>
     <script src="game/Constants.js"></script>
     <script src="game/Grid.js"></script>
