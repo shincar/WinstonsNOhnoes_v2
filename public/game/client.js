@@ -41,7 +41,7 @@ $(function() {
 
   });
 
-  socket.on(CONST_GAME_NAME + ' fight change', (username, grid, token) => {
+  socket.on(CONST_GAME_NAME + ' fight change', (fightroomname, username, grid, token) => {
 
   });
 

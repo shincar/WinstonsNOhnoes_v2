@@ -50,18 +50,6 @@ $(function() {
     }
   }
 
-  socket.on('fight start', (fightroom) => {
-    console.log('Fightroom[' + fightroom.name + '] start!');
-    currentFightroom = fightroom;
-    if(processingCanvasSketch) {
-      processingCanvasSketch.exit();
-    }
-    processingCanvasSketch = new Processing('game-canvas', sketchProc);
-
-    $waitingPage.fadeOut();
-    $gamePage.show();
-  });
-
   const switchToOptionPage = () => {
     $gamePage.fadeOut();
 
@@ -162,6 +150,17 @@ $(function() {
         }
     };
 
+    var getCurrentPlayer = function() {
+      var currentPlayer;
+
+      if(currentFightroom) {
+        currentPlayer = players.find(p => (p.name === currentFightroom.currentPlayer.name));
+      } else {
+        currentPlayer = players[stepCounter % 2];
+      }
+      return currentPlayer;
+    }
+
     var drawPlaygroundScene = function() {
         processing.background(93,194,83);
         processing.stroke(213,251,209);
@@ -171,7 +170,7 @@ $(function() {
             processing.line(i * gridSize + paddingOfBoard + paddingExtraH, paddingOfBoard + paddingExtraV, i * gridSize + paddingOfBoard + paddingExtraH, gridSize * gridCount + paddingOfBoard + paddingExtraV);
         }
 
-        var currentPlayer = players[stepCounter % 2];
+        var currentPlayer = getCurrentPlayer();
         processing.fill(currentPlayer.color);
         processing.stroke(currentPlayer.color);
         processing.strokeWeight(5);
@@ -223,12 +222,30 @@ $(function() {
 
     var processPlaygroundScene = function() {
         if(gameScene != GAME_SCENE_PLAYGROUND) return;
-
+        var currentPlayer;
         if( currentFightroom ) {
-          console.log('Not implement yet');
+          if(currentFightroom.currentPlayer.name === username) {
+            console.log('It\'s my turn, call DoClickAction');
+            currentPlayer = players.find(p => (p.name === username));
+
+            var ret = currentPlayer.DoClickAction(processing.mouseX, processing.mouseY, playground);
+            if(ret.result) {
+              socket.emit('fight change', currentFightroom, username, ret.token_index, ret.grid_index);
+
+              currentFightroom.currentPlayer = currentFightroom.currentPlayers.find(p => (p.name !== username));
+
+              stepCounter++;
+            }
+
+            if(playground.check()) {
+              gameScene = GAME_SCENE_END;
+            }
+          }
         } else {
           var currentPlayer = players[stepCounter % 2];
-          if(currentPlayer.DoClickAction(processing.mouseX, processing.mouseY, playground)) {
+
+          var ret = currentPlayer.DoClickAction(processing.mouseX, processing.mouseY, playground);
+          if(ret.result) {
             stepCounter++;
           }
 
@@ -271,6 +288,7 @@ $(function() {
 
     var player1 = new Player(1, "Player 1", processing.color(213,251,209), processing.loadImage("https://shincar.github.io/games/images/cs-winston.png"));
     var player2 = new Player(2, "Player 2", processing.color(58,121,52), processing.loadImage("https://shincar.github.io/games/images/cs-ohnoes.png"));
+    var players = [player1, player2];
 
     var start_button_x = paddingOfBoard + 30 + paddingExtraH;
     var start_button_y = gridSize * 2 + paddingOfBoard + paddingExtraV;
@@ -282,7 +300,7 @@ $(function() {
     var playground = new PlayGround(gridCount, gridSize, paddingOfBoard, paddingExtraH, paddingExtraV);
 
     var stepCounter = 0;
-    var players = [player1, player2];
+
 
     processing.setup = function() {
       processing.size(window.innerWidth,window.innerHeight);
@@ -290,18 +308,21 @@ $(function() {
       start_button.SetColorTheme(processing.color(93,194,83), processing.color(213,251,209), processing.color(213,251,209));
       options_button.SetColorTheme(processing.color(93,194,83), processing.color(213,251,209), processing.color(213,251,209));
 
-      if(username) {
-        player1.name = username;
-      }
+
 
       if(currentFightroom) {
         console.log('fightroom established');
-        if(username == currentFightroom.currentPlayers[0].name) {
-          player2.name = currentFightroom.currentPlayers[1].name;
-        } else {
-          player1.name = currentFightroom.currentPlayers[0].name;
-        }
+        player1.name = currentFightroom.currentPlayers[0].name;
+        player2.name = currentFightroom.currentPlayers[1].name;
+        console.log('setup() Player1: ' + player1.name);
+        console.log('setup() Player2: ' + player2.name);
+
         gameScene = GAME_SCENE_PLAYGROUND;
+      }
+      else {
+        if(username) {
+          player1.name = username;
+        }
       }
     }
 
@@ -325,5 +346,45 @@ $(function() {
               break;
       }
     }
+
+    socket.on('fight start', (fightroom) => {
+      console.log('Fightroom[' + fightroom.name + '] start!');
+      currentFightroom = fightroom;
+      if(processingCanvasSketch) {
+        processingCanvasSketch.exit();
+      }
+      player1.name = currentFightroom.currentPlayers[0].name;
+      player2.name = currentFightroom.currentPlayers[1].name;
+      console.log('Player 1: ' + player1.name);
+      console.log('Player 2: ' + player2.name);
+
+      processingCanvasSketch = new Processing('game-canvas', sketchProc);
+
+      $waitingPage.fadeOut();
+      $gamePage.show();
+    });
+
+    socket.on('fight change', (fightroom, playername, token_index, grid_index) => {
+      console.log('Fightroom[' + currentFightroom.name + '] change!');
+      console.log('User[' + playername + '] performed a move');
+
+      var player = players.find(p => (p.name === playername));
+      console.log(player.name);
+      var token = player.tokens.find(t => (t.token_index === token_index));
+      var grid = playground.gridList.find(g => (g.grid_index === grid_index));
+
+      token.selected = true;
+      var clickedX = grid.x;
+      var clickedY = grid.y;
+
+      player.DoClickAction(clickedX, clickedY, playground);
+
+      if(playground.check()) {
+        gameScene = GAME_SCENE_END;
+      }
+      // Change currentPlayer back
+      currentFightroom = fightroom;
+      currentFightroom.currentPlayer = currentFightroom.currentPlayers.find(p => (p.name === username));
+    });
   }
 });

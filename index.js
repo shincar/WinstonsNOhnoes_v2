@@ -28,10 +28,10 @@ var Player = function(username, fightroomname) {
   this.fightroomname = fightroomname;
 };
 
-var Move = function() {
-  this.plyaername;
-  this.grid;
-  this.token;
+var Move = function(playername, token, grid) {
+  this.playername = playername;
+  this.token = token;
+  this.grid = grid;
 }
 
 var Fightroom = function(fightroomname) {
@@ -79,6 +79,12 @@ io.on('connection', (socket) => {
       console.log('New fightroom[' + fightroomname + '] created. Player1[' + username + '] joined');
       socket.join(fightroomname);
     }
+  });
+
+  socket.on('fight change', (fightroom, username, token_index, grid_index) => {
+    console.log('A user: [' + username + '] performed a move(' + token_index + ', ' + grid_index + ')');
+    fightroom.moves.push(new Move(username, token_index, grid_index));
+    socket.to(fightroom.name).emit('fight change', fightroom, username, token_index, grid_index);
   });
 
   socket.on('game cancel fightroom', (username, fightroomname) => {

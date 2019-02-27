@@ -1,5 +1,6 @@
-var Token = function(id, size, color, image) {
+var Token = function(id, token_index, size, color, image) {
   this.player_id = id;
+  this.token_index = token_index;
   this.size = size;
   this.color = color;
   this.image = image;

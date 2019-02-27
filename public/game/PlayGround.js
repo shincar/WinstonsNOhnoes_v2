@@ -8,7 +8,7 @@ var PlayGround = function(gridCount, gridSize, paddingOfBoard, paddingExtraH, pa
 
   for(var row = 0; row < this.grid_count; row++) {
       for(var col = 0; col < this.grid_count; col++) {
-          this.gridList.push(new Grid(this.padding + (col + 0.5) * this.grid_size + paddingExtraH, this.padding + (row + 0.5) * this.grid_size + paddingExtraV, this.grid_size));
+          this.gridList.push(new Grid(row * this.grid_count + col, this.padding + (col + 0.5) * this.grid_size + paddingExtraH, this.padding + (row + 0.5) * this.grid_size + paddingExtraV, this.grid_size));
       }
   }
 };

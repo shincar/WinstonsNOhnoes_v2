@@ -3,9 +3,9 @@ var Player = function(id, name, color, image) {
   this.name = name;
   this.color = color;
   this.image = image;
-  this.tokens = [new Token(id, TOKEN_SIZE_SMALL, color, image), new Token(id, TOKEN_SIZE_SMALL, color, image),
-                 new Token(id, TOKEN_SIZE_MEDIUM, color, image), new Token(id, TOKEN_SIZE_MEDIUM, color, image),
-                 new Token(id, TOKEN_SIZE_LARGE, color, image), new Token(id, TOKEN_SIZE_LARGE, color, image)];
+  this.tokens = [new Token(id, 0, TOKEN_SIZE_SMALL, color, image), new Token(id, 1, TOKEN_SIZE_SMALL, color, image),
+                 new Token(id, 2, TOKEN_SIZE_MEDIUM, color, image), new Token(id, 3, TOKEN_SIZE_MEDIUM, color, image),
+                 new Token(id, 4, TOKEN_SIZE_LARGE, color, image), new Token(id, 5, TOKEN_SIZE_LARGE, color, image)];
 };
 
 Player.prototype.reset = function() {
@@ -22,6 +22,8 @@ Player.prototype.DoClickAction = function(x, y, playground) {
   var clickedToken;
   var bAlreadySelectedToken = false;
   var selectedToken;
+  var token_index = -1;
+  var grid_index = -1;
 
   // Get MouseX and MouseY and verify if any token is selected
   for(var i = 0; i < this.tokens.length; i++) {
@@ -77,6 +79,8 @@ Player.prototype.DoClickAction = function(x, y, playground) {
                 grid.token_list.push(selectedToken);
                 grid.owner = selectedToken.player_id;
                 selectedToken.parentGrid = grid;
+                token_index = selectedToken.token_index;
+                grid_index = grid.grid_index;
                 bValidAction = true;
               }
           }
@@ -94,5 +98,9 @@ Player.prototype.DoClickAction = function(x, y, playground) {
       // do nothing here for now
   }
 
-  return bValidAction;
+  return {
+      result: bValidAction,
+      token_index: token_index,
+      grid_index: grid_index
+  };
 };

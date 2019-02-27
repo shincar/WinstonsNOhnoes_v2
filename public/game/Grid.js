@@ -1,4 +1,5 @@
-var Grid = function(x, y, size) {
+var Grid = function(grid_index, x, y, size) {
+      this.grid_index = grid_index;
       this.x = x;
       this.y = y;
       this.size = size;
