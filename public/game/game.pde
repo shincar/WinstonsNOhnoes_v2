@@ -1,6 +1,6 @@
 void setup()
 {
-  size(200,200);
+  size(window.innerWidth,window.innerHeight);
   background(125);
   fill(255);
   noLoop();
