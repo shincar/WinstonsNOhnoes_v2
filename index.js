@@ -17,6 +17,10 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/game.html'));
 });
 
+app.get('/game', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/image.html'));
+});
+
 
 app.get('/chat', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/chat.html'));
