@@ -54,12 +54,24 @@
 
   var gameScene = GAME_SCENE_HOME;
   var image_left = paddingExtraH;
-  var image_step = 2;
+  var image_step = 0;
+
+  setup = function() {
+    size(window.innerWidth , window.innerHeight);
+  }
 
   // size(window.innerWidth, window.innerHeight);
-  size(400, 400);
-  fill(color(93,194,83));
-  ellipse(20, 20, 50, 50);
+  draw = function() {
+    image_step++;
+    if( image_step % 60 === 0 ) {
+      console.log('draw tick()')
+    }
+    background(255);
+    fill(color(93,194,83));
+    ellipse(100, 100, 50, 50);
+  }
+
+
   // Token.prototype.draw = function(x, y, size) {
   //   if(this.selected) {
   //       stroke(244,0,0);
