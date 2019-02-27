@@ -169,7 +169,7 @@ var paddingExtraH = (window.innerWidth - maxSize) / 2;
 var paddingExtraV = (window.innerHeight - maxSize) / 2;
 
 var player1 = new Player(1, "Player 1", color(213,251,209), loadImage("images/cs-winston.png"));
-var player2 = new Player(2, "Player 2", color(58,121,52), loadImage("images/cs-ohnoes.png"));
+var player2 = new Player(2, "Player 2", color(58,121,52), loadImage("https://shincar.github.io/games/images/cs-ohnoes.png"));
 
 var start_button_x = paddingOfBoard + 30 + paddingExtraH;
 var start_button_y = gridSize * 2 + paddingOfBoard + paddingExtraV;

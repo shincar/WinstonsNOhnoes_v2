@@ -18,7 +18,7 @@ runtime: nodejs10
 env_variables:
   PORT: 8080
 
-- url: images/(.*\.png)
-  mime_type: image/png
+handlers:
+- url: /images/(.*\.png)
   static_files: public/images/\1
   upload: public/images/(.*\.png)
