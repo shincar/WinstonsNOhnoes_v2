@@ -6,7 +6,6 @@ $(function() {
   var $usernameInput = $('.login.page .usernameInput'); // Input for username
   var $optionUsernameInput = $('.options.page .usernameInput');
 
-  var $loginPage = $('.login.page'); // The login page
   var $gamePage = $('.game.page'); // The game page
   var $optionsPage = $('.options.page'); // The options page
   var $gameCanvas = $('#game-canvas');
@@ -29,19 +28,14 @@ $(function() {
   var processingCanvasSketch;
   // Sets the client's username
   const setUsername = () => {
-    username = cleanInput($usernameInput.val().trim());
+    username = cleanInput($optionUsernameInput.val().trim());
 
     // If the username is valid
     if (username) {
       console.log('setUsername()');
-      var optionUsername = cleanInput($optionUsernameInput.val().trim());
-      if( optionUsername ) {
-        username = optionUsername;
-      }
-      $loginPage.fadeOut();
+
       $optionsPage.fadeOut();
       $gamePage.show();
-      $loginPage.off('click');
 
       if(processingCanvasSketch) {
         processingCanvasSketch.exit();
@@ -72,6 +66,8 @@ $(function() {
       setUsername();
     }
   });
+
+  processingCanvasSketch = new Processing('game-canvas', sketchProc);
 
   // Simple way to attach js code to the canvas is by using a function
   function sketchProc(processing) {

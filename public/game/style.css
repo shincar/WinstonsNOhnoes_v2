@@ -163,7 +163,7 @@ ul {
 /* Game page */
 
 .game .page {
-  display: none;
+  display: list-item;
 }
 
 /* end of Game page */
