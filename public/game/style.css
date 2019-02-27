@@ -135,6 +135,16 @@ ul {
   width: 400px;
 }
 
+.options.page .form .fightroomInput {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #fff;
+  outline: none;
+  padding-bottom: 15px;
+  text-align: center;
+  width: 400px;
+}
+
 .options.page .title {
   font-size: 200%;
 }
@@ -144,7 +154,7 @@ ul {
   letter-spacing: 3px;
 }
 
-.options.page .chatRoomNameInput {
+.options.page .fightroomInput {
   font-size: 200%;
   letter-spacing: 3px;
 }
@@ -154,11 +164,39 @@ ul {
   font-weight: 100;
 }
 
-.options.page .title, .options.page .chatRoomNameInput {
+.options.page .title, .options.page .fightroomInput {
   color: #fff;
   font-weight: 100;
 }
 /* end of options page */
+
+/* Wating page */
+.waiting.page {
+  background-color: #3A7934;
+  display: none;
+}
+
+.waiting.page .form {
+  height: 100px;
+  margin-top: -100px;
+  position: absolute;
+
+  text-align: center;
+  top: 50%;
+  width: 100%;
+}
+
+.waiting.page .title {
+  color: #fff;
+  font-size: 200%;
+}
+
+.waiting.page .cancelButton {
+  color: #0;
+  font-size: 150%;
+}
+
+/* end of waiting page */
 
 /* Game page */
 

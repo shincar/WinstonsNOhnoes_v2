@@ -17,20 +17,15 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/game.html'));
 });
 
-app.get('/game', function(req, res) {
-  res.sendFile(path.join(__dirname, '/public/image.html'));
-});
-
-
 app.get('/chat', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/chat.html'));
 })
 
 var numUsers = 0;
 
-var Player = function(username) {
+var Player = function(username, fightroomname) {
   this.name = username;
-  this.fightroomname;
+  this.fightroomname = fightroomname;
 };
 
 var Move = function() {
@@ -39,10 +34,10 @@ var Move = function() {
   this.token;
 }
 
-var Fightroom = function() {
-  this.name;
+var Fightroom = function(fightroomname) {
+  this.name = fightroomname;
   this.maxPlayerCount = 2;
-  this.currentPlayers;
+  this.currentPlayers = [];
   this.currentPlayer;
   this.moves = [];
   this.winner;
@@ -53,6 +48,62 @@ var fightroomList = [];
 
 io.on('connection', (socket) => {
   var addedUser = false;
+
+  socket.on('game join fightroom', (username, fightroomname) => {
+    console.log('A user: [' + username + '] tried to join fightroom[' + fightroomname + ']');
+
+    // [TODO] Add some fightroom info check here
+    var fightroom = fightroomList.find(function(room) {
+      return (room.name === fightroomname);
+    });
+
+    if(fightroom) {
+      // let user join existing fightroom
+      var player2 = new Player(username, fightroomname);
+      fightroom.currentPlayers.push(player2);
+      playerList.push(player2);
+      console.log('Fightroom[' + fightroomname + '] exist. Player2[' + username + '] joined');
+      socket.join(fightroomname);
+      // fightroom is full, notify players in the fightroom to start
+
+      io.in(fightroomname).emit('fight start', fightroom);
+
+    } else {
+      // if there is no fightroomname exist, create one
+      fightroom = new Fightroom(fightroomname);
+      var player1 = new Player(username, fightroomname);
+      playerList.push(player1);
+      fightroom.currentPlayers.push(player1);
+      fightroom.currentPlayer = player1;
+      fightroomList.push(fightroom);
+      console.log('New fightroom[' + fightroomname + '] created. Player1[' + username + '] joined');
+      socket.join(fightroomname);
+    }
+  });
+
+  socket.on('game cancel fightroom', (username, fightroomname) => {
+    console.log('A user: [' + username + '] left fightroom[' + fightroomname + ']');
+    socket.leave(fightroomname);
+    var playerIndex = playerList.findIndex(function(p) {
+      return (p.name === username && p.fightroomname == fightroomname);
+    });
+
+    if(playerIndex >= 0) {
+        console.log('Remove player from player list: ' + playerList.length);
+        playerList.splice(playerIndex, 1);
+        console.log('Player removed. ' + playerList.length);
+    }
+
+    var fightroomIndex = fightroomList.findIndex(function(room) {
+      return (room.name === fightroomname);
+    });
+
+    if(fightroomIndex >= 0) {
+        console.log('Remove fightroom from fightroom list: ' + fightroomList.length);
+        fightroomList.splice(fightroomIndex, 1);
+        console.log('Fightroom removed. ' + fightroomList.length);
+    }
+  });
 
   // when the client emits 'new message', this listens and executes
   socket.on('new message', (data) => {

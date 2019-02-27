@@ -5,14 +5,19 @@ $(function() {
   var $window = $(window);
   var $usernameInput = $('.login.page .usernameInput'); // Input for username
   var $optionUsernameInput = $('.options.page .usernameInput');
+  var $optionFightroomInput = $('.options.page .fightroomInput');
+  var $cancelButton = $('.waiting.page .cancelButton');
 
   var $gamePage = $('.game.page'); // The game page
   var $optionsPage = $('.options.page'); // The options page
+  var $waitingPage = $('.waiting.page');
   var $gameCanvas = $('#game-canvas');
 
   // Prompt for setting a username
   var username;
+  var fightroomname;
   var connected = false;
+  var currentFightroom;
 
   var socket = io();
 
@@ -29,23 +34,33 @@ $(function() {
   // Sets the client's username
   const setUsername = () => {
     username = cleanInput($optionUsernameInput.val().trim());
+    fightroomname = cleanInput($optionFightroomInput.val().trim());
 
     // If the username is valid
-    if (username) {
-      console.log('setUsername()');
+    if (username && fightroomname) {
+      console.log('join fightroom[' + fightroomname + '] with name[' + username + ']');
 
       $optionsPage.fadeOut();
-      $gamePage.show();
+      // $gamePage.show();
 
-      if(processingCanvasSketch) {
-        processingCanvasSketch.exit();
-      }
-      processingCanvasSketch = new Processing('game-canvas', sketchProc);
+      $waitingPage.show();
+
       // Tell the server your username
-      // [TODO] Later we will send command to server to tell server we are in with a fight room name
-      // socket.emit('add user', username);
+      socket.emit('game join fightroom', username, fightroomname);
     }
   }
+
+  socket.on('fight start', (fightroom) => {
+    console.log('Fightroom[' + fightroom.name + '] start!');
+    currentFightroom = fightroom;
+    if(processingCanvasSketch) {
+      processingCanvasSketch.exit();
+    }
+    processingCanvasSketch = new Processing('game-canvas', sketchProc);
+
+    $waitingPage.fadeOut();
+    $gamePage.show();
+  });
 
   const switchToOptionPage = () => {
     $gamePage.fadeOut();
@@ -65,6 +80,15 @@ $(function() {
     if (event.which === 13) {
       setUsername();
     }
+  });
+
+  $cancelButton.click(event => {
+    console.log('cancel clicked');
+    $waitingPage.fadeOut();
+    $gamePage.show();
+
+    socket.emit('game cancel fightroom', username, fightroomname);
+    delete currentFightroom;
   });
 
   processingCanvasSketch = new Processing('game-canvas', sketchProc);
@@ -200,13 +224,17 @@ $(function() {
     var processPlaygroundScene = function() {
         if(gameScene != GAME_SCENE_PLAYGROUND) return;
 
-        var currentPlayer = players[stepCounter % 2];
-        if(currentPlayer.DoClickAction(processing.mouseX, processing.mouseY, playground)) {
-          stepCounter++;
-        }
+        if( currentFightroom ) {
+          console.log('Not implement yet');
+        } else {
+          var currentPlayer = players[stepCounter % 2];
+          if(currentPlayer.DoClickAction(processing.mouseX, processing.mouseY, playground)) {
+            stepCounter++;
+          }
 
-        if(playground.check()) {
-          gameScene = GAME_SCENE_END;
+          if(playground.check()) {
+            gameScene = GAME_SCENE_END;
+          }
         }
     };
 
@@ -264,6 +292,16 @@ $(function() {
 
       if(username) {
         player1.name = username;
+      }
+
+      if(currentFightroom) {
+        console.log('fightroom established');
+        if(username == currentFightroom.currentPlayers[0].name) {
+          player2.name = currentFightroom.currentPlayers[1].name;
+        } else {
+          player1.name = currentFightroom.currentPlayers[0].name;
+        }
+        gameScene = GAME_SCENE_PLAYGROUND;
       }
     }
 

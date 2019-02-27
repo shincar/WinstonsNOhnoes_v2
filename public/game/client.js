@@ -37,15 +37,15 @@ $(function() {
     }
   });
 
-  socket.io(CONST_GAME_NAME + ' fight start', (firstplayer) => {
+  socket.on(CONST_GAME_NAME + ' fight start', (firstplayer) => {
 
   });
 
-  socket.io(CONST_GAME_NAME + ' fight change', (username, grid, token) => {
+  socket.on(CONST_GAME_NAME + ' fight change', (username, grid, token) => {
 
   });
 
-  socket.io(CONST_GAME_NAME + ' fight end', (winner) => {
+  socket.on(CONST_GAME_NAME + ' fight end', (winner) => {
 
   });
 }
