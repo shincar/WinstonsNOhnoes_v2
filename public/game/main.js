@@ -167,6 +167,7 @@ var paddingOfBoard = 120;
 var maxSize = gridSize * gridCount + paddingOfBoard * 2;
 var paddingExtraH = (window.innerWidth - maxSize) / 2;
 var paddingExtraV = (window.innerHeight - maxSize) / 2;
+var username;
 
 var player1 = new Player(1, "Player 1", color(213,251,209), loadImage("https://shincar.github.io/games/images/cs-winston.png"));
 var player2 = new Player(2, "Player 2", color(58,121,52), loadImage("https://shincar.github.io/games/images/cs-ohnoes.png"));
@@ -189,9 +190,14 @@ void setup()
 
   start_button.SetColorTheme(color(93,194,83), color(213,251,209), color(213,251,209));
   options_button.SetColorTheme(color(93,194,83), color(213,251,209), color(213,251,209));
+
+  if(getUsername()) {
+    console.log("Got username: " + username);
+  }
 }
 
 void draw(){
+
   switch (gameScene) {
       case GAME_SCENE_HOME:
           {

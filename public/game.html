@@ -2,22 +2,8 @@
 <html>
   <head>
     <title>Adam & Alvin's Lab - Winston & Ohnoes</title>
-    <style>
-    body {
-      margin: 0px;
-      padding: 0px;
-    }
-    canvas {
-      outline: 0px;
-      position: absolute;
-      margin: 0px;
-      padding: 0px;
-      left: 0px;
-      top: 0px;
-      width: 100%;
-      height: 100%;
-    }
-    </style>
+    <link rel="stylesheet" href="/game/style.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <head>
   <body>
     <script src="js/processing-1.4.8.min.js"></script>
@@ -27,6 +13,25 @@
     <script src="game/Token.js"></script>
     <script src="game/Player.js"></script>
     <script src="game/Button.js"></script>
-    <canvas data-processing-sources="game/main.js"></canvas>
+    <script src="/socket.io/socket.io.js"></script>
+    <ul class="pages">
+      <li class="game page">
+        <canvas id="game-canvas"></canvas>
+      </li>
+      <li class="login page">
+        <div class="form">
+          <h3 class="title">請輸入你的大名?</h3>
+          <input class="usernameInput" type="text" maxlength="14" />
+        </div>
+      </li>
+      <li class="options page">
+        <div class="form">
+          <h3 class="title">請輸入你的大名?</h3>
+          <input class="usernameInput" type="text" maxlength="14" />
+        </div>
+      </li>
+    </ul>
+    <script src="/game/bootstrapper.js"></script>
+
   </body>
 </html>
