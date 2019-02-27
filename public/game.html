@@ -2,9 +2,31 @@
 <html>
   <head>
     <title>Adam & Alvin's Lab - Winston & Ohnoes</title>
+    <style>
+    body {
+      margin: 0px;
+      padding: 0px;
+    }
+    canvas {
+      outline: 0px;
+      position: absolute;
+      margin: 0px;
+      padding: 0px;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+    }
+    </style>
   <head>
   <body>
     <script src="js/processing-1.4.8.min.js"></script>
+    <script src="game/Constants.js"></script>
+    <script src="game/Grid.js"></script>
+    <script src="game/PlayGround.js"></script>
+    <script src="game/Token.js"></script>
+    <script src="game/Player.js"></script>
+    <script src="game/Button.js"></script>
     <canvas data-processing-sources="game/game.pde"></canvas>
   </body>
 </html>
