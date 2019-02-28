@@ -72,7 +72,8 @@ Player.prototype.DoClickAction = function(x, y, playground) {
 
               selectedToken.selected = false;
               selectedToken.used = false;
-              if(!playground.check()) {
+              var ret = playground.check();
+              if(!ret.result) {
                 // move the token to this grid
                 selectedToken.used = true;
                 selectedToken.setTokenInfo(grid.x, grid.y, selectedToken.size);

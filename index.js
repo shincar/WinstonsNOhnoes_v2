@@ -102,7 +102,7 @@ io.on('connection', (socket) => {
     }
 
     var fightroomIndex = fightroomList.findIndex(function(room) {
-      return (room.name === fightroomname);
+      return (room.name === fightroom.name);
     });
 
     if(fightroomIndex >= 0) {
