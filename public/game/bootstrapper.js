@@ -237,7 +237,9 @@ $(function() {
               stepCounter++;
             }
 
-            if(playground.check()) {
+            var gameResult = playground.check();
+            if(gameResult.result) {
+              socket.emit('fight end', currentFightroom, gameResult.winner, username);
               gameScene = GAME_SCENE_END;
             }
           }
@@ -249,7 +251,8 @@ $(function() {
             stepCounter++;
           }
 
-          if(playground.check()) {
+          var gameResult = playground.check();
+          if(gameResult.result) {
             gameScene = GAME_SCENE_END;
           }
         }
@@ -379,7 +382,9 @@ $(function() {
 
       player.DoClickAction(clickedX, clickedY, playground);
 
-      if(playground.check()) {
+      var gameResult = playground.check();
+      if(gameResult.result) {
+        socket.emit('fight end', currentFightroom, gameResult.winner, username);
         gameScene = GAME_SCENE_END;
       }
       // Change currentPlayer back

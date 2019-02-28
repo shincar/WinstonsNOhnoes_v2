@@ -109,5 +109,8 @@ PlayGround.prototype.check = function() {
     this.winner = this.lines[0].owner;
   }
 
-  return (this.lines.length > 0);
+  return {
+    result: (this.lines.length > 0),
+    winner: this.winner
+  };
 };

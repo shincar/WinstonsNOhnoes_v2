@@ -87,6 +87,31 @@ io.on('connection', (socket) => {
     socket.to(fightroom.name).emit('fight change', fightroom, username, token_index, grid_index);
   });
 
+  socket.on('fight end', (fightroom, winner, playername) => {
+    console.log('Game[' + fightroom.name + '] end, winner: ' + winner);
+    socket.leave(fightroom.name);
+
+    var playerIndex = playerList.findIndex(function(p) {
+      return (p.name === playername && p.fightroomname == fightroom.name);
+    });
+
+    if(playerIndex >= 0) {
+        console.log('Remove player from player list: ' + playerList.length);
+        playerList.splice(playerIndex, 1);
+        console.log('Player removed. ' + playerList.length);
+    }
+
+    var fightroomIndex = fightroomList.findIndex(function(room) {
+      return (room.name === fightroomname);
+    });
+
+    if(fightroomIndex >= 0) {
+        console.log('Game ended, remove fightroom from fightroom list: ' + fightroomList.length);
+        fightroomList.splice(fightroomIndex, 1);
+        console.log('Fightroom removed. ' + fightroomList.length);
+    }
+  });
+
   socket.on('game cancel fightroom', (username, fightroomname) => {
     console.log('A user: [' + username + '] left fightroom[' + fightroomname + ']');
     socket.leave(fightroomname);
