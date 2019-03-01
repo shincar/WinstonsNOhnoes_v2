@@ -40,20 +40,20 @@ $(function() {
   if(is_iOS()) {
     console.log("iOS, try to make font bigger");
     // Tweak UI for login pane
-    var $form = $('.form');
-    var $title = $('.title');
-    var $usernameInput = $('.usernameInput');
-    var $fightroomInput = $('.fightroomInput');
-    var $joinButton = $('.joinButton');
-    var $cancelButton = $('.cancelButton');
-
-    $title.css('font-size', '500%');
-
-    $usernameInput.css('font-size', '500%');
-    $fightroomInput.css('font-size', '500%');
-    $joinButton.css('font-size', '400%');
-
-    $cancelButton.css('font-size', '400%');
+    // var $form = $('.form');
+    // var $title = $('.title');
+    // var $usernameInput = $('.usernameInput');
+    // var $fightroomInput = $('.fightroomInput');
+    // var $joinButton = $('.joinButton');
+    // var $cancelButton = $('.cancelButton');
+    //
+    // $title.css('font-size', '500%');
+    //
+    // $usernameInput.css('font-size', '500%');
+    // $fightroomInput.css('font-size', '500%');
+    // $joinButton.css('font-size', '400%');
+    //
+    // $cancelButton.css('font-size', '400%');
 
     $usernameInput.onfocus = function() {
       window.scrollTo(0, 0);
