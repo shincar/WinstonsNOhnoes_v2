@@ -85,6 +85,7 @@ $(function() {
   function sketchProc(processing) {
     /* @pjs preload="https://shincar.github.io/games/images/cs-winston.png,https://shincar.github.io/games/images/cs-ohnoes.png"; */
 
+
     Token.prototype.draw = function(x, y, size) {
       if(this.selected) {
           processing.stroke(244,0,0);
@@ -231,7 +232,6 @@ $(function() {
             var ret = currentPlayer.DoClickAction(processing.mouseX, processing.mouseY, playground);
             if(ret.result) {
               socket.emit('fight change', currentFightroom, username, ret.token_index, ret.grid_index);
-
               currentFightroom.currentPlayer = currentFightroom.currentPlayers.find(p => (p.name !== username));
 
               stepCounter++;
@@ -303,7 +303,6 @@ $(function() {
     var playground = new PlayGround(gridCount, gridSize, paddingOfBoard, paddingExtraH, paddingExtraV);
 
     var stepCounter = 0;
-
 
     processing.setup = function() {
       processing.size(window.innerWidth,window.innerHeight);
