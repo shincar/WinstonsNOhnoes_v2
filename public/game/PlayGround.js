@@ -22,6 +22,10 @@ PlayGround.prototype.reset = function() {
   this.winner = 0;
 };
 
+PlayGround.prototype.setWinner = function(id) {
+  this.winner = id;
+};
+
 PlayGround.prototype.check = function() {
   if( this.lines.length > 0 ) return true;
   var bFound = false;

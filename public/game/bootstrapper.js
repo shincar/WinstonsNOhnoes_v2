@@ -16,6 +16,7 @@ $(function() {
 
   // Prompt for setting a username
   var username;
+  var userid;
   var fightroomname;
   var connected = false;
   var currentFightroom;
@@ -315,14 +316,10 @@ $(function() {
       start_button.SetColorTheme(processing.color(93,194,83), processing.color(213,251,209), processing.color(213,251,209));
       options_button.SetColorTheme(processing.color(93,194,83), processing.color(213,251,209), processing.color(213,251,209));
 
-
-
       if(currentFightroom) {
         console.log('fightroom established');
         player1.name = currentFightroom.currentPlayers[0].name;
         player2.name = currentFightroom.currentPlayers[1].name;
-        console.log('setup() Player1: ' + player1.name);
-        console.log('setup() Player2: ' + player2.name);
 
         gameScene = GAME_SCENE_PLAYGROUND;
       }
@@ -362,6 +359,12 @@ $(function() {
       }
       player1.name = currentFightroom.currentPlayers[0].name;
       player2.name = currentFightroom.currentPlayers[1].name;
+      if( player1.name === username ) {
+        userid = 1;
+      } else {
+        userid = 2;
+      }
+      console.log('Userid: ' + userid);
       console.log('Player 1: ' + player1.name);
       console.log('Player 2: ' + player2.name);
 
@@ -376,7 +379,6 @@ $(function() {
       console.log('User[' + playername + '] performed a move');
 
       var player = players.find(p => (p.name === playername));
-      console.log(player.name);
       var token = player.tokens.find(t => (t.token_index === token_index));
       var grid = playground.gridList.find(g => (g.grid_index === grid_index));
 
@@ -394,6 +396,13 @@ $(function() {
       // Change currentPlayer back
       currentFightroom = fightroom;
       currentFightroom.currentPlayer = currentFightroom.currentPlayers.find(p => (p.name === username));
+    });
+
+    socket.on('fight aborted', (fightroom) => {
+      console.log('Game[' + fightroom.name + '] aborted due to opponemt left');
+      console.log('Set winner id to ' + playground.winner);
+      playground.setWinner(userid);
+      gameScene = GAME_SCENE_END;
     });
   }
 });

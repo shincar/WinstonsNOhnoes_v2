@@ -65,9 +65,11 @@ io.on('connection', (socket) => {
       console.log('Fightroom[' + fightroomname + '] exist. Player2[' + username + '] joined');
       socket.join(fightroomname);
       // fightroom is full, notify players in the fightroom to start
+      // Store fightroom information here
+      socket.username = username;
+      socket.fightroom = fightroom;
 
       io.in(fightroomname).emit('fight start', fightroom);
-
     } else {
       // if there is no fightroomname exist, create one
       fightroom = new Fightroom(fightroomname);
@@ -77,6 +79,10 @@ io.on('connection', (socket) => {
       fightroom.currentPlayer = player1;
       fightroomList.push(fightroom);
       console.log('New fightroom[' + fightroomname + '] created. Player1[' + username + '] joined');
+      // Store fightroom information here
+      socket.username = username;
+      socket.fightroom = fightroom;
+
       socket.join(fightroomname);
     }
   });
@@ -91,24 +97,24 @@ io.on('connection', (socket) => {
     console.log('Game[' + fightroom.name + '] end, winner: ' + winner);
     socket.leave(fightroom.name);
 
-    var playerIndex = playerList.findIndex(function(p) {
-      return (p.name === playername && p.fightroomname == fightroom.name);
+    socket.fightroom.currentPlayers.forEach(function(player) {
+      var playerIndex = playerList.findIndex(function(p) {
+        return (p.name === player.name && p.fightroomname == player.fightroomname);
+      });
+
+      if(playerIndex >= 0) {
+          console.log('Remove player[' + player.name + '] from player list: ' + playerList.length);
+          playerList.splice(playerIndex, 1);
+      }
     });
 
-    if(playerIndex >= 0) {
-        console.log('Remove player from player list: ' + playerList.length);
-        playerList.splice(playerIndex, 1);
-        console.log('Player removed. ' + playerList.length);
-    }
-
     var fightroomIndex = fightroomList.findIndex(function(room) {
-      return (room.name === fightroom.name);
+      return (room.name === socket.fightroom.name);
     });
 
     if(fightroomIndex >= 0) {
-        console.log('Game ended, remove fightroom from fightroom list: ' + fightroomList.length);
+        console.log('Remove fightroom[' + socket.fightroom.name + '] from fightroom list: ' + fightroomList.length);
         fightroomList.splice(fightroomIndex, 1);
-        console.log('Fightroom removed. ' + fightroomList.length);
     }
   });
 
@@ -179,6 +185,31 @@ io.on('connection', (socket) => {
 
   // when the user disconnects.. perform this
   socket.on('disconnect', () => {
+    if (socket.fightroom) {
+      console.log('Game[' + socket.fightroom.name + '] aborted due to Player[' + socket.username + '] connection lost');
+      io.in(socket.fightroom.name).emit('fight aborted', socket.fightroom);
+
+      socket.fightroom.currentPlayers.forEach(function(player) {
+        var playerIndex = playerList.findIndex(function(p) {
+          return (p.name === player.name && p.fightroomname == player.fightroomname);
+        });
+
+        if(playerIndex >= 0) {
+            console.log('Remove player[' + player.name + '] from player list: ' + playerList.length);
+            playerList.splice(playerIndex, 1);
+        }
+      });
+
+      var fightroomIndex = fightroomList.findIndex(function(room) {
+        return (room.name === socket.fightroom.name);
+      });
+
+      if(fightroomIndex >= 0) {
+          console.log('Remove fightroom[' + socket.fightroom.name + '] from fightroom list: ' + fightroomList.length);
+          fightroomList.splice(fightroomIndex, 1);
+      }
+    }
+
     if (addedUser) {
       --numUsers;
 
