@@ -35,13 +35,22 @@
           var $fightroomInput = $('.fightroomInput');
           var $cancelButton = $('.cancelButton');
 
-          $form.css('top', '30%');
           $title.css('font-size', '500%');
 
           $usernameInput.css('font-size', '500%');
           $fightroomInput.css('font-size', '500%');
 
           $cancelButton.css('font-size', '400%');
+
+          $usernameInput.onfocus = function() {
+            window.scrollTo(0, 0);
+            document.body.scrollTop = 0;
+          }
+
+          $fightroomInput.onfocus = function() {
+            window.scrollTo(0, 0);
+            document.body.scrollTop = 0;
+          }
         }
       }
     </script>
