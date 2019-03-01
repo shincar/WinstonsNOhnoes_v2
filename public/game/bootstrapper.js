@@ -253,8 +253,13 @@ $(function() {
         }
         // Draw player token here
         var token_adjust = 0;
-        var current_token_x = 150 * window.innerWidth / 1024 - currentPlayer.tokens[0].size * tokenSizeFactor / 2 + paddingExtraH;
-        var current_token_y = 50 * window.innerWidth / 1024 + paddingExtraV;
+
+        var current_token_x = 150  - currentPlayer.tokens[0].size * tokenSizeFactor / 2 + paddingExtraH;
+        var current_token_y = 50 + paddingExtraV;
+        if( window.innerWidth < 600) {
+          current_token_x = 150 * window.innerWidth / 1024 - currentPlayer.tokens[0].size * tokenSizeFactor / 2 + paddingExtraH;
+          current_token_y = 50 * window.innerWidth / 1024 + paddingExtraV;
+        }
 
         currentPlayer.tokens.forEach(function(token) {
             if(!token.used) {
