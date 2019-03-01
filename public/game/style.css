@@ -160,6 +160,12 @@ ul {
   letter-spacing: 3px;
 }
 
+.options.page .joinButton {
+  color: #0;
+  margin-top: 20px;
+  font-size: 150%;
+}
+
 .options.page .title, .options.page .usernameInput {
   color: #fff;
   font-weight: 100;

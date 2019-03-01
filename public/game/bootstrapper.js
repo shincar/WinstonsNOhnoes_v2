@@ -6,6 +6,7 @@ $(function() {
   var $usernameInput = $('.login.page .usernameInput'); // Input for username
   var $optionUsernameInput = $('.options.page .usernameInput');
   var $optionFightroomInput = $('.options.page .fightroomInput');
+  var $optionJoinButton = $('.options.page .joinButton');
   var $cancelButton = $('.waiting.page .cancelButton');
 
   var $gamePage = $('.game.page'); // The game page
@@ -66,8 +67,12 @@ $(function() {
     }
     // When the client hits ENTER on their keyboard
     if (event.which === 13) {
-      setUsername();
+      // setUsername();
     }
+  });
+
+  $optionJoinButton.click(event => {
+    setUsername();
   });
 
   $cancelButton.click(event => {
