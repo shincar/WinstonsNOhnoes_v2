@@ -201,6 +201,10 @@ ul {
   font-size: 150%;
 }
 
+.waiting.page .status {
+  display: none;
+}
+
 /* end of waiting page */
 
 /* Game page */

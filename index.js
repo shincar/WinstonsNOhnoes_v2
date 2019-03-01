@@ -52,24 +52,29 @@ io.on('connection', (socket) => {
   socket.on('game join fightroom', (username, fightroomname) => {
     console.log('A user: [' + username + '] tried to join fightroom[' + fightroomname + ']');
 
-    // [TODO] Add some fightroom info check here
     var fightroom = fightroomList.find(function(room) {
       return (room.name === fightroomname);
     });
 
     if(fightroom) {
-      // let user join existing fightroom
-      var player2 = new Player(username, fightroomname);
-      fightroom.currentPlayers.push(player2);
-      playerList.push(player2);
-      console.log('Fightroom[' + fightroomname + '] exist. Player2[' + username + '] joined');
-      socket.join(fightroomname);
-      // fightroom is full, notify players in the fightroom to start
-      // Store fightroom information here
-      socket.username = username;
-      socket.fightroom = fightroom;
+      // [TODO] Add some fightroom info check here
+      if(fightroom.currentPlayers.length === fightroom.maxPlayerCount) {
+        console.log('Fightroom[' + fightroomname + '] is full, try another name');
+        socket.emit('game already exist', fightroom);
+      } else {
+        // let user join existing fightroom
+        var player2 = new Player(username, fightroomname);
+        fightroom.currentPlayers.push(player2);
+        playerList.push(player2);
+        console.log('Fightroom[' + fightroomname + '] exist. Player2[' + username + '] joined');
+        socket.join(fightroomname);
+        // fightroom is full, notify players in the fightroom to start
+        // Store fightroom information here
+        socket.username = username;
+        socket.fightroom = fightroom;
 
-      io.in(fightroomname).emit('fight start', fightroom);
+        io.in(fightroomname).emit('fight start', fightroom);
+      }
     } else {
       // if there is no fightroomname exist, create one
       fightroom = new Fightroom(fightroomname);

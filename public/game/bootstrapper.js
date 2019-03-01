@@ -9,6 +9,7 @@ $(function() {
   var $optionJoinButton = $('.options.page .joinButton');
   var $cancelButton = $('.waiting.page .cancelButton');
   var $waitingTitle = $('.waiting.page .title');
+  var $waitingStatus = $('.waiting.page .status');
 
   var $gamePage = $('.game.page'); // The game page
   var $optionsPage = $('.options.page'); // The options page
@@ -47,6 +48,7 @@ $(function() {
       // $gamePage.show();
 
       $waitingTitle.html('嘗試建立對戰[' + fightroomname + ']');
+      $('.waiting.page .status').text('1');
       $waitingPage.show();
 
       // Tell the server your username
@@ -81,11 +83,17 @@ $(function() {
 
   $cancelButton.click(event => {
     console.log('cancel clicked');
-    $waitingPage.fadeOut();
-    $gamePage.show();
+    if($('.waiting.page .status').text() === '1') {
+      console.log('do nothing for now');
+    } else {
+      $waitingPage.fadeOut();
+      $gamePage.show();
 
-    socket.emit('game cancel fightroom', username, fightroomname);
-    delete currentFightroom;
+      if($('.waiting.page .status').text() === '0') {
+        socket.emit('game cancel fightroom', username, fightroomname);
+        delete currentFightroom;
+      }
+    }
   });
 
   processingCanvasSketch = new Processing('game-canvas', sketchProc);
@@ -357,13 +365,13 @@ $(function() {
     socket.on('game created fightroom', (fightroom) => {
       console.log('Fightroom[' + fightroom.name + '] created!');
       $('.waiting.page .title').html('等待玩家加入中');
-      // $waitingTitle.html('等待玩家加入中')；
+      $('.waiting.page .status').text('0');
     });
 
-    socket.on('game already exist', (fightroomname) => {
-      console.log('Fightroom[' + fightroomname + '] full! Try another name');
-      $('.waiting.page .title').html('對戰[' + fightroomname + ']有人囉！換個名字吧！');
-      // $waitingTitle.html('對戰[' + fightroomname + ']有人囉！換個名字吧！')；
+    socket.on('game already exist', (fightroom) => {
+      console.log('Fightroom[' + fightroom.name + '] full! Try another name');
+      $('.waiting.page .title').html('對戰[' + fightroom.name + ']滿囉！換個名字吧！');
+      $('.waiting.page .status').text('2');
     });
 
     socket.on('fight start', (fightroom) => {
