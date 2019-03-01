@@ -8,6 +8,7 @@ $(function() {
   var $optionFightroomInput = $('.options.page .fightroomInput');
   var $optionJoinButton = $('.options.page .joinButton');
   var $cancelButton = $('.waiting.page .cancelButton');
+  var $waitingTitle = $('.waiting.page .title');
 
   var $gamePage = $('.game.page'); // The game page
   var $optionsPage = $('.options.page'); // The options page
@@ -45,6 +46,7 @@ $(function() {
       $optionsPage.fadeOut();
       // $gamePage.show();
 
+      $waitingTitle.html('嘗試建立對戰[' + fightroomname + ']');
       $waitingPage.show();
 
       // Tell the server your username
@@ -54,6 +56,7 @@ $(function() {
 
   const switchToOptionPage = () => {
     $gamePage.fadeOut();
+    $waitingPage.fadeOut();
 
     if(username) {
       $optionUsernameInput.val(username);
@@ -350,6 +353,18 @@ $(function() {
               break;
       }
     }
+
+    socket.on('game created fightroom', (fightroom) => {
+      console.log('Fightroom[' + fightroom.name + '] created!');
+      $('.waiting.page .title').html('等待玩家加入中');
+      // $waitingTitle.html('等待玩家加入中')；
+    });
+
+    socket.on('game already exist', (fightroomname) => {
+      console.log('Fightroom[' + fightroomname + '] full! Try another name');
+      $('.waiting.page .title').html('對戰[' + fightroomname + ']有人囉！換個名字吧！');
+      // $waitingTitle.html('對戰[' + fightroomname + ']有人囉！換個名字吧！')；
+    });
 
     socket.on('fight start', (fightroom) => {
       console.log('Fightroom[' + fightroom.name + '] start!');

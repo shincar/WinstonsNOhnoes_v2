@@ -79,6 +79,8 @@ io.on('connection', (socket) => {
       fightroom.currentPlayer = player1;
       fightroomList.push(fightroom);
       console.log('New fightroom[' + fightroomname + '] created. Player1[' + username + '] joined');
+      socket.emit('game created fightroom', fightroom);
+
       // Store fightroom information here
       socket.username = username;
       socket.fightroom = fightroom;
