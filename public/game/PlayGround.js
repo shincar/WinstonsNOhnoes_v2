@@ -13,6 +13,20 @@ var PlayGround = function(gridCount, gridSize, paddingOfBoard, paddingExtraH, pa
   }
 };
 
+PlayGround.prototype.setGridInfo = function(grid_count, grid_size, padding_of_board, paddingExtraH, paddingExtraV) {
+  this.grid_count = grid_count;
+  this.grid_size = grid_size;
+  this.padding = padding_of_board;
+
+  for(var row = 0; row < this.grid_count; row++) {
+      for(var col = 0; col < this.grid_count; col++) {
+          this.gridList[row * this.grid_count + col].x = this.padding + (col + 0.5) * this.grid_size + paddingExtraH;
+          this.gridList[row * this.grid_count + col].y = this.padding + (row + 0.5) * this.grid_size + paddingExtraV;
+          this.gridList[row * this.grid_count + col].size = this.grid_size;
+      }
+  }
+};
+
 PlayGround.prototype.reset = function() {
   this.gridList.forEach(function(grid) {
       grid.token_list = [];

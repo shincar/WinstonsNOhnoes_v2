@@ -9,6 +9,13 @@ var Button = function(text, x, y, w, h, radius) {
   this.text_size = 36;
 };
 
+Button.prototype.SetCoordinateInfo = function(x, y, w, h) {
+  this.x = x;
+  this.y = y;
+  this.w = w;
+  this.h = h;
+}
+
 Button.prototype.SetColorTheme = function(color, text_color, stroke_color) {
   this.color = color; //color(93,194,83);
   this.text_color = text_color; // color(213,251,209);

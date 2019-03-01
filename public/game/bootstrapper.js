@@ -163,7 +163,11 @@ $(function() {
     var drawHomeScene = function() {
         processing.background(58,121,52);
         processing.fill(213,251,209);
-        processing.textSize(60);
+        if(window.innerWidth < 600) {
+          processing.textSize(36);
+        } else {
+          processing.textSize(60);
+        }
         processing.textAlign(processing.CENTER,processing.CENTER);
         processing.text("Winston & Ohnoes", 0, 0, maxSize + 2 * paddingExtraH, maxSize * 0.75 + 2 * paddingExtraV);
 
@@ -171,8 +175,25 @@ $(function() {
         start_button.draw();
         options_button.draw();
 
-        processing.image(player1.image, paddingOfBoard + 50 + paddingExtraH, paddingOfBoard + paddingExtraV, 100, 100);
-        processing.image(player2.image, maxSize - paddingOfBoard - 150 + paddingExtraH, paddingOfBoard + paddingExtraV, 100, 100);
+        var imageY;
+        var imageX1;
+        var imageX2;
+        if(paddingExtraV > 100) {
+          imageY = paddingOfBoard + paddingExtraV / 2;
+        } else {
+          imageY = paddingOfBoard + paddingExtraV;
+        }
+
+        if( window.innerWidth < 600 ) {
+          imageX1 =  paddingOfBoard + paddingExtraH;
+          imageX2 = maxSize - paddingOfBoard - 100 + paddingExtraH;
+        } else {
+          imageX1 =  paddingOfBoard + 50 + paddingExtraH;
+          imageX2 = maxSize - paddingOfBoard - 150 + paddingExtraH;
+        }
+
+        processing.image(player1.image, imageX1, imageY, 100, 100);
+        processing.image(player2.image, imageX2, imageY, 100, 100);
     };
 
     var resetGameData = function() {
@@ -225,25 +246,30 @@ $(function() {
         processing.stroke(currentPlayer.color);
         processing.strokeWeight(5);
         processing.textSize(24);
-        processing.text(currentPlayer.name, 50 + paddingExtraH, 10 + paddingExtraV);
-
+        if(paddingExtraV > 100) {
+          processing.text(currentPlayer.name, 50 + paddingExtraH, 10 + paddingExtraV / 2);
+        } else {
+          processing.text(currentPlayer.name, 50 + paddingExtraH, 10 + paddingExtraV);
+        }
         // Draw player token here
         var token_adjust = 0;
-        var current_token_x = 150 - currentPlayer.tokens[0].size / 2 + paddingExtraH;
-        var current_token_y = 50 + paddingExtraV;
+        var current_token_x = 150 * window.innerWidth / 1024 - currentPlayer.tokens[0].size * tokenSizeFactor / 2 + paddingExtraH;
+        var current_token_y = 50 * window.innerWidth / 1024 + paddingExtraV;
 
         currentPlayer.tokens.forEach(function(token) {
             if(!token.used) {
-              current_token_x = current_token_x + token.size / 2;
-              token.setTokenInfo(current_token_x, current_token_y, token.size);
+              current_token_x = current_token_x + token.size * tokenSizeFactor / 2;
+              token.setTokenInfo(current_token_x, current_token_y, token.size * tokenSizeFactor);
               token.draw();
-              current_token_x = current_token_x + token.size / 2 +  10;
+              current_token_x = current_token_x + token.size * tokenSizeFactor / 2 +  10;
             }
         });
 
         // Draw the lastest token in the grid here
         playground.gridList.forEach(function(grid) {
           if(grid.token_list.length > 0) {
+              var currentToken = grid.token_list[grid.token_list.length - 1];
+              grid.token_list[grid.token_list.length - 1].setTokenInfo(currentToken.currentX, currentToken.currentY, currentToken.size * tokenSizeFactor);
               grid.token_list[grid.token_list.length - 1].draw();
           }
         });
@@ -337,6 +363,8 @@ $(function() {
     var maxSize = gridSize * gridCount + paddingOfBoard * 2;
     var paddingExtraH = (window.innerWidth - maxSize) / 2;
     var paddingExtraV = (window.innerHeight - maxSize) / 2;
+    var textSizeFactor = 1;
+    var tokenSizeFactor = 1;
 
     var player1 = new Player(1, "Player 1", processing.color(213,251,209), processing.loadImage("https://shincar.github.io/games/images/cs-winston.png"));
     var player2 = new Player(2, "Player 2", processing.color(58,121,52), processing.loadImage("https://shincar.github.io/games/images/cs-ohnoes.png"));
@@ -355,7 +383,27 @@ $(function() {
 
     processing.setup = function() {
       processing.size(window.innerWidth,window.innerHeight);
+      console.log('Resolution: ('+window.innerWidth+'x'+window.innerHeight+')');
+      if(window.innerWidth < maxSize) {
+        tokenSizeFactor = 0.7;
+        paddingOfBoard /= 2;
+        gridSize = (window.innerWidth - paddingOfBoard * 2) / 3;
+        maxSize = gridSize * gridCount + paddingOfBoard * 2;
+        paddingExtraH = (window.innerWidth - maxSize) / 2;
+        paddingExtraV = (window.innerHeight - maxSize) / 2;
 
+        start_button_x = paddingOfBoard + paddingExtraH;
+        start_button_y = gridSize * 2 + paddingOfBoard + paddingExtraV;
+        options_button_x = maxSize - paddingExtraH * 2 - (paddingOfBoard) - gridSize;
+        options_button_y = gridSize * 2 + paddingOfBoard + paddingExtraV;
+
+        playground.setGridInfo(gridCount, gridSize, paddingOfBoard, paddingExtraH, paddingExtraV);
+      }
+
+      if(window.innerWidth < 600) {
+        start_button.SetCoordinateInfo(start_button_x, start_button_y, 160, 48);
+        options_button.SetCoordinateInfo(options_button_x, options_button_y, 160, 48);
+      }
       start_button.SetColorTheme(processing.color(93,194,83), processing.color(213,251,209), processing.color(213,251,209));
       options_button.SetColorTheme(processing.color(93,194,83), processing.color(213,251,209), processing.color(213,251,209));
 
