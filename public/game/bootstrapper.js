@@ -42,8 +42,8 @@ $(function() {
     // Tweak UI for login pane
     // var $form = $('.form');
     // var $title = $('.title');
-    // var $usernameInput = $('.usernameInput');
-    // var $fightroomInput = $('.fightroomInput');
+    var $usernameInput = $('.usernameInput');
+    var $fightroomInput = $('.fightroomInput');
     // var $joinButton = $('.joinButton');
     // var $cancelButton = $('.cancelButton');
     //
