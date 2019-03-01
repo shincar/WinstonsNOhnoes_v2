@@ -314,8 +314,8 @@ $(function() {
     var start_button_y = gridSize * 2 + paddingOfBoard + paddingExtraV;
     var options_button_x = maxSize + paddingExtraH - (paddingOfBoard + 30) - gridSize;
     var options_button_y = gridSize * 2 + paddingOfBoard + paddingExtraV;
-    var start_button = new Button("Start", start_button_x, start_button_y, gridSize, gridSize * 0.3, gridSize / 10);
-    var options_button = new Button("Options", options_button_x, options_button_y, gridSize, gridSize * 0.3, gridSize / 10);
+    var start_button = new Button("單人對戰", start_button_x, start_button_y, gridSize, gridSize * 0.3, gridSize / 10);
+    var options_button = new Button("網路對戰", options_button_x, options_button_y, gridSize, gridSize * 0.3, gridSize / 10);
 
     var playground = new PlayGround(gridCount, gridSize, paddingOfBoard, paddingExtraH, paddingExtraV);
 
