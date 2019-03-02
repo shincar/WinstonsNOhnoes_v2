@@ -1,11 +1,14 @@
 {
-  "name": "socket.io-chat",
+  "name": "winstons-and-ohnoes",
   "version": "0.0.0",
-  "description": "A simple chat client using socket.io",
+  "description": "a simple board game", 
   "main": "index.js",
-  "author": "Grant Timmerman",
+  "author": "Shun Cheng Liu",
   "private": true,
   "license": "BSD",
+  "engines": {
+      "node": ">=8"
+  },
   "dependencies": {
     "express": "^4.16.4",
     "socket.io": "^2.2.0"
