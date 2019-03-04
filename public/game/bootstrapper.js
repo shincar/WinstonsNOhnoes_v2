@@ -128,10 +128,11 @@ $(function() {
     }
   });
 
+  var sketchProc = new SketchProc(processing);
   processingCanvasSketch = new Processing('game-canvas', sketchProc);
 
   // Simple way to attach js code to the canvas is by using a function
-  function sketchProc(processing) {
+  var SketchProc = function(processing) {
     /* @pjs preload="https://shincar.github.io/games/images/cs-winston.png,https://shincar.github.io/games/images/cs-ohnoes.png"; */
 
 
@@ -461,8 +462,8 @@ $(function() {
 
     socket.on('fight start', (fightroom) => {
       console.log('Fightroom[' + fightroom.name + '] start!');
-      processingCanvasSketch.resetGameData();
-      processingCanvasSketch.gameScene = GAME_SCENE_PLAYGROUND;
+      sketchProc.resetGameData();
+      sketchProc.gameScene = GAME_SCENE_PLAYGROUND;
       currentFightroom = fightroom;
       player1.name = currentFightroom.currentPlayers[0].name;
       player2.name = currentFightroom.currentPlayers[1].name;
@@ -474,9 +475,6 @@ $(function() {
       console.log('Userid: ' + userid);
       console.log('Player 1: ' + player1.name);
       console.log('Player 2: ' + player2.name);
-
-      processingCanvasSketch.resetGameData();
-      processingCanvasSketch.gameScene = GAME_SCENE_PLAYGROUND;
 
       $waitingPage.fadeOut();
       $gamePage.show();
