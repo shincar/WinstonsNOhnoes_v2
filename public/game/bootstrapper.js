@@ -131,7 +131,7 @@ $(function() {
   processingCanvasSketch = new Processing('game-canvas', sketchProc);
 
   // Simple way to attach js code to the canvas is by using a function
-  var sketchProc = function(processing) {
+  function sketchProc(processing) {
     /* @pjs preload="https://shincar.github.io/games/images/cs-winston.png,https://shincar.github.io/games/images/cs-ohnoes.png"; */
 
 
