@@ -461,10 +461,9 @@ $(function() {
 
     socket.on('fight start', (fightroom) => {
       console.log('Fightroom[' + fightroom.name + '] start!');
+      processingCanvasSketch.resetGameData();
+      processingCanvasSketch.gameScene = GAME_SCENE_PLAYGROUND;
       currentFightroom = fightroom;
-      if(processingCanvasSketch) {
-        processingCanvasSketch.exit();
-      }
       player1.name = currentFightroom.currentPlayers[0].name;
       player2.name = currentFightroom.currentPlayers[1].name;
       if( player1.name === username ) {
@@ -476,7 +475,8 @@ $(function() {
       console.log('Player 1: ' + player1.name);
       console.log('Player 2: ' + player2.name);
 
-      processingCanvasSketch = new Processing('game-canvas', sketchProc);
+      processingCanvasSketch.resetGameData();
+      processingCanvasSketch.gameScene = GAME_SCENE_PLAYGROUND;
 
       $waitingPage.fadeOut();
       $gamePage.show();
